@@ -1,7 +1,20 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
+import AllPrefectures from "./compornents/AllPrefectures";
+
+const aaa = [
+  { prefCode: 1, prefName: "青森" },
+  { prefCode: 2, prefName: "dv" },
+];
+const result = async function getStaticProps() {
+  const response = await fetch("/page/api/prefectures");
+  const data = await response.json();
+  console.log("getStaticProps");
+  return { props: data.result };
+};
+const test = () => {};
 
 const Home: NextPage = () => {
   return (
@@ -16,11 +29,13 @@ const Home: NextPage = () => {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
+        <AllPrefectures result={aaa} onChange={test} />
 
         <p className={styles.description}>
-          Get started by editing{' '}
+          Get started by editing{" "}
           <code className={styles.code}>pages/index.tsx</code>
         </p>
+        <div>{result}</div>
 
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>
@@ -59,14 +74,14 @@ const Home: NextPage = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
