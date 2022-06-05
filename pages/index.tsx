@@ -4,8 +4,27 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { GetServerSideProps } from "next";
 import { useState, useEffect } from "react";
-import { Chart, registerables } from "chart.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import { Line } from "react-chartjs-2";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const Home: NextPage = () => {
   //都道府県一覧のチェックボックス
@@ -36,10 +55,18 @@ const Home: NextPage = () => {
       {
         label: "青森",
         data: [
-          12707, 12571, 12602, 12199, 11518, 10888, 10133, 9275, 8431, 7610,
-          6816, 6048, 5324,
+          12817, 12707, 12571, 12602, 12199, 11518, 10888, 10133, 9275, 8431,
+          7610, 6816, 6048, 5324,
         ],
         borderColor: "rgb(75, 192, 192)",
+      },
+      {
+        label: "岩手",
+        data: [
+          13567, 12707, 11569, 12602, 12199, 987, 10888, 10133, 9275, 8431,
+          7610, 6816, 6048, 5324,
+        ],
+        borderColor: "rgba(255, 99, 132, 0.5)",
       },
     ],
   };
@@ -68,24 +95,11 @@ const Home: NextPage = () => {
             </div>
           ))}
         </div>
-        <Line height={300} width={400} data={graphData} options={options} />
+        <Line height={300} width={600} data={graphData} options={options} />
       </main>
 
       <footer className={styles.footer}>Crested by kazushi</footer>
     </div>
   );
 };
-
-/* export const getSeverSideProps: GetServerSideProps = async () => {
-  const response = await fetch("/page/api/prefectures");
-  const data = response.json()
-  console.log(typeof data);
-
-   const aaa: Array<Atype> = [
-    { prefCode: 1, prefName: "青森" },
-    { prefCode: 2, prefName: "dv" },
-  ]; 
-
-  return { props: { data } };
-}; */
 export default Home;
