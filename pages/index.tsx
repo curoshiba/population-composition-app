@@ -1,8 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { GetServerSideProps } from "next";
 import { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
@@ -15,7 +13,6 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { type } from "os";
 
 ChartJS.register(
   CategoryScale,
@@ -39,32 +36,41 @@ const Home: NextPage = () => {
       ];
   const [datas, setData] = useState<dataType>([]);
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("/api/prefectures");
-      const resArray = await response.json();
-      setData(resArray.data.result);
-    };
-    fetchData();
+    try {
+      const fetchData = async () => {
+        const response = await fetch("/api/prefectures");
+        const resArray = await response.json();
+        setData(resArray.data.result);
+      };
+      fetchData();
+    } catch (e) {
+      alert(e);
+    }
   }, []);
 
   //人口構成グラフ
   type stateType = {
-    labels: [] | Array<number>;
-    datasets: [] | Array<object>;
+    labels: Array<number>;
+    datasets: Array<object>;
   };
   const [graph, setGraph] = useState<stateType>({ labels: [], datasets: [] });
+  const { labels, datasets } = graph;
 
   const onchangeCheck = (
-    prefCode: number,
-    prefName: string,
+    prefCode_: number,
+    prefName_: string,
     checkStatus: boolean
   ) => {
     //選択された都道府県のグラフを表示
     if (checkStatus) {
-      fetchGraphData(prefCode, prefName);
+      fetchGraphData(prefCode_, prefName_);
     }
     //選択解除された都道府県のグラフを削除
     else {
+      console.log(datasets);
+      const index = datasets.findIndex((value) => value.label === prefName_);
+      datasets.splice(index, 1);
+      setGraph({ labels: labels, datasets: datasets });
     }
   };
 
@@ -84,22 +90,19 @@ const Home: NextPage = () => {
     const datArray: Array<string> = [...result.data.result.data[0].data].map(
       (v) => v.value as string
     );
-    console.log(datArray);
     const dataset = {
       label: preName,
       data: datArray,
-      borderColor: "rgb(75, 192, 192)",
     };
-
     setGraph({
       labels: [...labelArray],
       datasets: [...graph.datasets, dataset],
     });
   };
-
   const options: object = {
     maintainAspectRatio: false,
     responsive: false,
+    borderColor: "rgb(255, 99, 132)",
   };
 
   return (
