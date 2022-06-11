@@ -99,6 +99,7 @@ const Home: NextPage = () => {
       datasets: [...graph.datasets, dataset],
     });
   };
+  //グラフのオプション
   const options: object = {
     maintainAspectRatio: false,
     responsive: false,
@@ -135,7 +136,7 @@ const Home: NextPage = () => {
           ))}
         </div>
         <p className={styles.description}>人口構成グラフ</p>
-        <Line height={300} width={600} data={graph} options={options} />
+        <Line height={300} width={600} data={graph} options={options} redraw />
       </main>
 
       <footer className={styles.footer}>Crested by kazushi</footer>

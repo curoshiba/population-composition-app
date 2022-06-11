@@ -8,10 +8,12 @@ export default async function getPrefectures(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const response = await fetch(url, {
-    method: "GET",
-    headers: myHeaders,
-  });
-  const data = await response.json();
-  res.status(200).json({ data });
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: myHeaders,
+    });
+    const data = await response.json();
+    res.status(200).json({ data });
+  } catch (error) {}
 }
