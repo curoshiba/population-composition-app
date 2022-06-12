@@ -48,6 +48,7 @@ const Home: NextPage = () => {
     }
     //選択解除された都道府県のグラフを削除
     else {
+      // @ts-ignore
       const index = datasets.findIndex((value) => value.label === prefName_);
       datasets.splice(index, 1);
       setGraph({ labels: labels, datasets: datasets });
