@@ -2,27 +2,10 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { useState, useEffect } from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { Chart as ChartJS, LinearScale, Tooltip } from "chart.js";
 import { Line } from "react-chartjs-2";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+import chartjsPluginColorschemes from "chartjs-plugin-colorschemes";
+//import { Paired12 } from "types/chartjs-plugin-colorschemes/src/colorschemes/colorschemes.brewer";
 
 const Home: NextPage = () => {
   //都道府県一覧のチェックボックス
@@ -100,10 +83,14 @@ const Home: NextPage = () => {
     });
   };
   //グラフのオプション
-  const options: object = {
+  const options = {
     maintainAspectRatio: false,
-    responsive: false,
-    borderColor: "rgb(255, 99, 132)",
+    responsive: true,
+    plugin: {
+      colorschemes: {
+        scheme: chartjsPluginColorschemes,
+      },
+    },
   };
 
   return (
@@ -136,7 +123,7 @@ const Home: NextPage = () => {
           ))}
         </div>
         <p className={styles.description}>人口構成グラフ</p>
-        <Line height={300} width={600} data={graph} options={options} redraw />
+        <Line data={graph} options={options} redraw />
       </main>
 
       <footer className={styles.footer}>Crested by kazushi</footer>
