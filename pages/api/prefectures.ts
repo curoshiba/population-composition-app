@@ -15,5 +15,7 @@ export default async function getPrefectures(
     });
     const data = await response.json();
     res.status(200).json({ data });
-  } catch (error) {}
+  } catch (error) {
+    res.status(403).json({ error });
+  }
 }

@@ -4,7 +4,6 @@ import styles from "../styles/Home.module.css";
 import { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import chartjsPluginColorschemes from "chartjs-plugin-colorschemes";
-//import { Paired12 } from "types/chartjs-plugin-colorschemes/src/colorschemes/colorschemes.brewer";
 
 const Home: NextPage = () => {
   //都道府県一覧のチェックボックス
@@ -26,7 +25,7 @@ const Home: NextPage = () => {
       };
       fetchData();
     } catch (e) {
-      alert(e);
+      alert("都道府県一覧の取得に失敗しました");
     }
   }, []);
 
@@ -49,7 +48,6 @@ const Home: NextPage = () => {
     }
     //選択解除された都道府県のグラフを削除
     else {
-      console.log(datasets);
       const index = datasets.findIndex((value) => value.label === prefName_);
       datasets.splice(index, 1);
       setGraph({ labels: labels, datasets: datasets });
@@ -63,7 +61,6 @@ const Home: NextPage = () => {
     const response = await fetch(`/api/population/${prefCode}`);
     const result = await response.json();
     //key=year => Array<number>
-    //ex [1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020, 2025, 2030, 2035, 2040, 2045];
     const labelArray: Array<number> = [...result.data.result.data[0].data].map(
       (value) => value.year
     );
@@ -91,7 +88,6 @@ const Home: NextPage = () => {
         scheme: chartjsPluginColorschemes,
       },
     },
-    fill: false,
   };
 
   return (

@@ -7,11 +7,15 @@ export default async function getPrefectures(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const url = `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=${req.query.id}`;
-  const response = await fetch(url, {
-    method: "GET",
-    headers: Header,
-  });
-  const data = await response.json();
-  res.status(200).json({ data });
+  try {
+    const url = `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-&prefCode=${req.query.id}`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: Header,
+    });
+    const data = await response.json();
+    res.status(200).json({ data });
+  } catch (error) {
+    res.status(403).json({ error });
+  }
 }
