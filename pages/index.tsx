@@ -2,7 +2,6 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { useState, useEffect } from "react";
-import { Chart as ChartJS, LinearScale, Tooltip } from "chart.js";
 import { Line } from "react-chartjs-2";
 import chartjsPluginColorschemes from "chartjs-plugin-colorschemes";
 //import { Paired12 } from "types/chartjs-plugin-colorschemes/src/colorschemes/colorschemes.brewer";
@@ -76,6 +75,7 @@ const Home: NextPage = () => {
     const dataset = {
       label: preName,
       data: datArray,
+      fill: false,
     };
     setGraph({
       labels: [...labelArray],
@@ -85,12 +85,13 @@ const Home: NextPage = () => {
   //グラフのオプション
   const options = {
     maintainAspectRatio: false,
-    responsive: true,
+    responsive: false,
     plugin: {
       colorschemes: {
         scheme: chartjsPluginColorschemes,
       },
     },
+    fill: false,
   };
 
   return (
@@ -123,7 +124,15 @@ const Home: NextPage = () => {
           ))}
         </div>
         <p className={styles.description}>人口構成グラフ</p>
-        <Line data={graph} options={options} redraw />
+        <div className={styles.graph}>
+          <Line
+            width={800}
+            height={400}
+            data={graph}
+            options={options}
+            redraw
+          />
+        </div>
       </main>
 
       <footer className={styles.footer}>Crested by kazushi</footer>
